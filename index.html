@@ -1,778 +1,869 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baek Hyungjun | UST-KITECH Robotics Researcher</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --accent: #06b6d4;
-            --bg: #0f172a;
-            --bg-card: #1e293b;
-            --bg-card-hover: #334155;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --gradient: linear-gradient(135deg, #2563eb, #06b6d4);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', 'Noto Sans KR', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* Animated background */
-        .bg-animation {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .bg-animation .circle {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.03;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .bg-animation .circle:nth-child(1) {
-            width: 600px; height: 600px;
-            background: var(--primary);
-            top: -200px; right: -100px;
-            animation-delay: 0s;
-        }
-
-        .bg-animation .circle:nth-child(2) {
-            width: 400px; height: 400px;
-            background: var(--accent);
-            bottom: -100px; left: -50px;
-            animation-delay: -7s;
-        }
-
-        .bg-animation .circle:nth-child(3) {
-            width: 300px; height: 300px;
-            background: #8b5cf6;
-            top: 50%; left: 50%;
-            animation-delay: -14s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            backdrop-filter: blur(20px);
-            background: rgba(15, 23, 42, 0.8);
-            border-bottom: 1px solid var(--border);
-        }
-
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 64px;
-        }
-
-        nav .logo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        nav .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 28px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav .nav-links a:hover { color: var(--text); }
-
-        /* Hero */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 64px;
-        }
-
-        .hero-content {
-            display: flex;
-            align-items: center;
-            gap: 48px;
-            width: 100%;
-        }
-
-        .hero-avatar {
-            flex-shrink: 0;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            box-shadow: 0 0 60px rgba(37, 99, 235, 0.3);
-            position: relative;
-        }
-
-        .hero-avatar::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            background: var(--gradient);
-            z-index: -1;
-            opacity: 0.5;
-            filter: blur(15px);
-        }
-
-        .hero-text .subtitle {
-            color: var(--accent);
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .hero-text h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 8px;
-        }
-
-        .hero-text h1 .kr { font-size: 1.5rem; color: var(--text-muted); font-weight: 400; }
-
-        .hero-text .tagline {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-        }
-
-        .hero-badges {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 28px;
-        }
-
-        .badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            color: var(--text-muted);
-        }
-
-        .badge.highlight {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: rgba(37, 99, 235, 0.1);
-        }
-
-        .hero-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
-        }
-
-        .btn-outline {
-            border: 1px solid var(--border);
-            color: var(--text);
-            background: transparent;
-        }
-
-        .btn-outline:hover {
-            border-color: var(--text-muted);
-            background: var(--bg-card);
-        }
-
-        /* Sections */
-        section {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .section-title span {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-desc {
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            font-size: 1rem;
-        }
-
-        /* About */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .about-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px;
-            transition: all 0.3s;
-        }
-
-        .about-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .about-card .icon {
-            font-size: 1.6rem;
-            margin-bottom: 12px;
-        }
-
-        .about-card h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .about-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* Research */
-        .research-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .research-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px;
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            transition: all 0.3s;
-        }
-
-        .research-item:hover {
-            border-color: var(--accent);
-            transform: translateX(6px);
-        }
-
-        .research-icon {
-            flex-shrink: 0;
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(6, 182, 212, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-        }
-
-        .research-item h3 { font-size: 1.05rem; margin-bottom: 6px; }
-        .research-item p { color: var(--text-muted); font-size: 0.9rem; }
-
-        /* Projects */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-
-        .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s;
-            display: block;
-        }
-
-        .project-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .project-header h3 { font-size: 1.05rem; }
-
-        .project-tag {
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .tag-original { background: rgba(37, 99, 235, 0.15); color: #60a5fa; }
-        .tag-fork { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-
-        .project-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
-
-        .project-techs {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tech-tag {
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
-        }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 32px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 7px;
-            top: 8px;
-            bottom: 8px;
-            width: 2px;
-            background: var(--border);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 32px;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -28px;
-            top: 8px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--primary);
-            border: 2px solid var(--bg);
-        }
-
-        .timeline-item .date {
-            font-size: 0.8rem;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .timeline-item h3 { font-size: 1.05rem; margin-bottom: 4px; }
-        .timeline-item p { color: var(--text-muted); font-size: 0.9rem; }
-
-        /* Skills */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-        }
-
-        .skill-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s;
-        }
-
-        .skill-item:hover { border-color: var(--primary); }
-        .skill-item .skill-icon { font-size: 1.3rem; }
-        .skill-item span { font-size: 0.9rem; font-weight: 500; }
-
-        /* Contact */
-        .contact-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-        }
-
-        .contact-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s;
-        }
-
-        .contact-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .contact-card .icon { font-size: 2rem; margin-bottom: 12px; }
-        .contact-card h3 { font-size: 0.95rem; margin-bottom: 4px; }
-        .contact-card p { color: var(--text-muted); font-size: 0.85rem; }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 32px 0;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-content { flex-direction: column; text-align: center; }
-            .hero-avatar { width: 140px; height: 140px; font-size: 3rem; }
-            .hero-text h1 { font-size: 2rem; }
-            .hero-badges { justify-content: center; }
-            .hero-links { justify-content: center; }
-            .about-grid { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hyeongjun Baek | Robotics Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --bg3: #21262d;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --accent3: #f78166;
+      --accent4: #d2a8ff;
+      --text: #c9d1d9;
+      --text2: #8b949e;
+      --text3: #f0f6fc;
+      --card-hover: #1c2128;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Navbar ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem; font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--text2); text-decoration: none; font-size: .875rem;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text3); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 60% 40%, rgba(88,166,255,.08) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 20% 80%, rgba(63,185,80,.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    /* animated grid */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(48,54,61,.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48,54,61,.35) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 900px; width: 100%;
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(88,166,255,.1); border: 1px solid rgba(88,166,255,.25);
+      border-radius: 999px; padding: .3rem .9rem;
+      font-size: .8rem; color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .hero-badge .dot { width:7px; height:7px; border-radius:50%; background:var(--accent2); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700; color: var(--text3);
+      line-height: 1.15; margin-bottom: .5rem;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--accent4);
+      font-weight: 500; margin-bottom: .75rem;
+    }
+    .hero-desc { color: var(--text2); font-size: .95rem; max-width: 520px; margin-bottom: 1.5rem; }
+    .hero-links { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .5rem 1.1rem; border-radius: 6px;
+      font-size: .875rem; font-weight: 500; text-decoration: none;
+      transition: all .2s; cursor: pointer; border: none;
+    }
+    .btn-primary { background: var(--accent); color: #0d1117; }
+    .btn-primary:hover { background: #79c0ff; }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: rgba(88,166,255,.07); }
+    .hero-avatar {
+      width: 180px; height: 180px; border-radius: 50%;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 40px rgba(88,166,255,.25);
+      overflow: hidden; flex-shrink: 0;
+      background: var(--bg3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+    }
+
+    /* ── Sections ── */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .8rem; color: var(--accent); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: .5rem;
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700; color: var(--text3);
+      margin-bottom: .5rem;
+    }
+    .section-divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      border-radius: 2px; margin-bottom: 2.5rem;
+    }
+
+    /* ── About ── */
+    #about { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .about-text p { color: var(--text2); margin-bottom: 1rem; font-size: .95rem; }
+    .about-text p strong { color: var(--text3); }
+    .info-list { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+    .info-list li {
+      display: flex; align-items: center; gap: .75rem;
+      color: var(--text2); font-size: .9rem;
+    }
+    .info-list li .icon { font-size: 1.1rem; width: 1.5rem; text-align: center; }
+    .info-list li a { color: var(--accent); text-decoration: none; }
+    .info-list li a:hover { text-decoration: underline; }
+
+    /* ── Education ── */
+    .edu-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem;
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      transition: border-color .2s, box-shadow .2s;
+      margin-bottom: 1rem;
+    }
+    .edu-card:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(88,166,255,.08); }
+    .edu-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: rgba(88,166,255,.1); border: 1px solid rgba(88,166,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+    .edu-body h3 { color: var(--text3); font-size: 1rem; font-weight: 600; margin-bottom: .2rem; }
+    .edu-body .edu-major { color: var(--accent4); font-size: .875rem; margin-bottom: .3rem; }
+    .edu-body .edu-meta { color: var(--text2); font-size: .8rem; }
+    .edu-body .edu-meta span { margin-right: 1rem; }
+    .badge {
+      display: inline-block; padding: .15rem .6rem;
+      border-radius: 999px; font-size: .75rem; font-weight: 500;
+    }
+    .badge-green { background: rgba(63,185,80,.15); color: var(--accent2); border: 1px solid rgba(63,185,80,.3); }
+    .badge-blue { background: rgba(88,166,255,.15); color: var(--accent); border: 1px solid rgba(88,166,255,.3); }
+    .badge-purple { background: rgba(210,168,255,.15); color: var(--accent4); border: 1px solid rgba(210,168,255,.3); }
+    .badge-orange { background: rgba(247,129,102,.15); color: var(--accent3); border: 1px solid rgba(247,129,102,.3); }
+
+    /* ── Publications ── */
+    #publications { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .pub-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .pub-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+    }
+    .pub-card.kroc::before { background: var(--accent2); }
+    .pub-card.wip::before { background: var(--accent); }
+    .pub-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+    .pub-status { display: flex; align-items: center; gap: .5rem; margin-bottom: .6rem; }
+    .pub-title { font-size: 1rem; font-weight: 600; color: var(--text3); margin-bottom: .4rem; line-height: 1.5; }
+    .pub-title-ko { font-size: .875rem; color: var(--text2); margin-bottom: .6rem; }
+    .pub-authors { font-size: .85rem; color: var(--text2); margin-bottom: .4rem; }
+    .pub-authors strong { color: var(--accent); }
+    .pub-venue { font-size: .82rem; color: var(--accent4); margin-bottom: .75rem; }
+    .pub-tags { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .pub-tag {
+      font-size: .75rem; padding: .15rem .55rem;
+      border-radius: 4px; background: var(--bg2);
+      border: 1px solid var(--border); color: var(--text2);
+    }
+    /* NASA-TLX table */
+    .tlx-table {
+      width: 100%; border-collapse: collapse;
+      margin-top: 1rem; font-size: .82rem;
+      border-radius: 8px; overflow: hidden;
+    }
+    .tlx-table th {
+      background: var(--bg2); color: var(--text2);
+      padding: .5rem .75rem; text-align: left;
+      font-weight: 500; border-bottom: 1px solid var(--border);
+    }
+    .tlx-table td {
+      padding: .45rem .75rem; border-bottom: 1px solid rgba(48,54,61,.5);
+      color: var(--text2);
+    }
+    .tlx-table td.highlight { color: var(--accent2); font-weight: 600; }
+    .tlx-table tr:last-child td { border-bottom: none; font-weight: 700; color: var(--text3); }
+
+    /* ── Research ── */
+    .research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.25rem; }
+    .research-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem 1.5rem;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .research-card:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(88,166,255,.1); }
+    .research-icon { font-size: 1.8rem; margin-bottom: .75rem; }
+    .research-card h3 { font-size: .95rem; font-weight: 600; color: var(--text3); margin-bottom: .4rem; }
+    .research-card p { font-size: .85rem; color: var(--text2); }
+
+    /* ── Projects ── */
+    #projects { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .project-list { display: flex; flex-direction: column; gap: .75rem; }
+    .project-item {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.25rem;
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 1rem; align-items: start;
+      transition: border-color .2s;
+    }
+    .project-item:hover { border-color: var(--accent2); }
+    .project-date { font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--text2); white-space: nowrap; padding-top: .15rem; }
+    .project-body h4 { font-size: .9rem; font-weight: 600; color: var(--text3); margin-bottom: .2rem; }
+    .project-body p { font-size: .82rem; color: var(--text2); }
+    .project-tech { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .4rem; }
+    .tech-chip {
+      font-size: .72rem; padding: .1rem .45rem;
+      border-radius: 4px; background: rgba(88,166,255,.1);
+      border: 1px solid rgba(88,166,255,.2); color: var(--accent);
+    }
+
+    /* ── Skills ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1.25rem; }
+    .skill-group {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+    }
+    .skill-group h3 { font-size: .8rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .75rem; }
+    .skill-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .skill-chip {
+      font-size: .78rem; padding: .25rem .65rem;
+      border-radius: 6px; background: var(--bg3);
+      border: 1px solid var(--border); color: var(--text);
+      transition: border-color .2s, color .2s;
+    }
+    .skill-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Awards ── */
+    #awards { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .award-list { display: flex; flex-direction: column; gap: .75rem; }
+    .award-item {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: border-color .2s;
+    }
+    .award-item:hover { border-color: var(--accent3); }
+    .award-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .award-body h4 { font-size: .9rem; font-weight: 600; color: var(--text3); margin-bottom: .15rem; }
+    .award-body p { font-size: .82rem; color: var(--text2); }
+    .award-date { font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--text2); margin-left: auto; flex-shrink: 0; }
+
+    /* ── Training ── */
+    .training-list { display: flex; flex-direction: column; gap: .75rem; }
+    .training-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.25rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .training-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .training-body h4 { font-size: .9rem; font-weight: 600; color: var(--text3); margin-bottom: .2rem; }
+    .training-body p { font-size: .82rem; color: var(--text2); }
+    .training-date { font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--text2); margin-left: auto; flex-shrink: 0; }
+
+    /* ── Contact ── */
+    #contact { text-align: center; }
+    .contact-grid { display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap; margin-top: 2rem; }
+    .contact-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem 2rem;
+      text-align: center; text-decoration: none;
+      transition: border-color .2s, transform .2s;
+      min-width: 160px;
+    }
+    .contact-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .contact-card .contact-icon { font-size: 2rem; margin-bottom: .5rem; }
+    .contact-card .contact-label { font-size: .8rem; color: var(--text2); margin-bottom: .25rem; }
+    .contact-card .contact-value { font-size: .875rem; color: var(--text3); font-weight: 500; word-break: break-all; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--bg); border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem; text-align: center;
+      color: var(--text2); font-size: .8rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-avatar { display: none; }
+      .hero-links { justify-content: center; }
+      .about-grid { grid-template-columns: 1fr; }
+      .project-item { grid-template-columns: 1fr; }
+      .project-date { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="bg-animation">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-
+<!-- ── NAV ── -->
 <nav>
-    <div class="container">
-        <div class="logo">HJ Baek</div>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#research">Research</a>
-            <a href="#projects">Projects</a>
-            <a href="#skills">Skills</a>
-            <a href="#contact">Contact</a>
-        </div>
-    </div>
+  <a class="nav-logo" href="#">&lt;BaekHyeongjun /&gt;</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#publications">Papers</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </nav>
 
-<section class="hero">
-    <div class="container">
-        <div class="hero-content">
-            <div class="hero-avatar">&#129302;</div>
-            <div class="hero-text">
-                <div class="subtitle">Student Researcher</div>
-                <h1>Baek Hyungjun <span class="kr">&#48177;&#54805;&#51456;</span></h1>
-                <p class="tagline">AI & Robotics Researcher at UST-KITECH School</p>
-                <div class="hero-badges">
-                    <span class="badge highlight">Robotics</span>
-                    <span class="badge highlight">Computer Vision</span>
-                    <span class="badge">Deep Learning</span>
-                    <span class="badge">Robot Grasping</span>
-                    <span class="badge">UST-KITECH</span>
-                </div>
-                <div class="hero-links">
-                    <a href="https://github.com/RobotLoverInKorea" target="_blank" class="btn btn-primary">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        GitHub
-                    </a>
-                    <a href="mailto:contact@example.com" class="btn btn-outline">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-                        Contact
-                    </a>
-                </div>
-            </div>
-        </div>
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        UST-KITECH · 석사과정 학생연구원
+      </div>
+      <h1>백 형 준<br/><span>Hyeongjun Baek</span></h1>
+      <div class="hero-sub">Robotics & Shared Autonomy Researcher</div>
+      <p class="hero-desc">
+        로봇 원격 제어(Teleoperation), 파지(Grasping), 공유 제어(Shared Control),
+        컴퓨터 비전 및 Foundation Model을 연구합니다.<br/>
+        인간과 로봇이 자연스럽게 협력하는 미래를 만들어갑니다.
+      </p>
+      <div class="hero-links">
+        <a href="https://github.com/RobotLoverInKorea" target="_blank" class="btn btn-primary">
+          ⚡ GitHub
+        </a>
+        <a href="mailto:baekjun@kitech.re.kr" class="btn btn-outline">
+          ✉ baekjun@kitech.re.kr
+        </a>
+        <a href="#publications" class="btn btn-outline">
+          📄 Publications
+        </a>
+      </div>
     </div>
+    <div class="hero-avatar">🤖</div>
+  </div>
 </section>
 
+<!-- ── ABOUT ── -->
 <section id="about">
-    <div class="container fade-in">
-        <h2 class="section-title"><span>About</span> Me</h2>
-        <p class="section-desc">UST-KITECH School &#47196;&#48391;&#44277;&#54617; &#51204;&#44277; &#54617;&#49373;&#50672;&#44396;&#50896;&#51004;&#47196;&#49436;, AI&#50752; &#47196;&#48391; &#44592;&#49696;&#51032; &#50997;&#54633;&#51012; &#53685;&#54644; &#49324;&#46988;&#44284; &#54632;&#44760; &#51068;&#54616;&#45716; &#47196;&#48391;&#51012; &#50672;&#44396;&#54633;&#45768;&#45796;.</p>
-        <div class="about-grid">
-            <div class="about-card">
-                <div class="icon">&#127891;</div>
-                <h3>Education</h3>
-                <p>UST (&#44284;&#54617;&#44592;&#49696;&#50672;&#54633;&#45824;&#54617;&#50896;&#45824;&#54617;&#44368;)<br>KITECH School &#47196;&#48391;&#44277;&#54617; &#51204;&#44277;</p>
-            </div>
-            <div class="about-card">
-                <div class="icon">&#128300;</div>
-                <h3>Affiliation</h3>
-                <p>&#54620;&#44397;&#49373;&#49328;&#44592;&#49696;&#50672;&#44396;&#50896; (KITECH)<br>Korea Institute of Industrial Technology</p>
-            </div>
-            <div class="about-card">
-                <div class="icon">&#129302;</div>
-                <h3>Research Focus</h3>
-                <p>&#47196;&#48391; &#54028;&#51648;(Grasping) &#48143; &#47588;&#45768;&#54540;&#47112;&#51060;&#49496;<br>&#52980;&#54504;&#53552; &#48708;&#51204; &#44592;&#48152; &#47196;&#48391; &#51064;&#49885;</p>
-            </div>
-            <div class="about-card">
-                <div class="icon">&#127919;</div>
-                <h3>Goal</h3>
-                <p>&#49324;&#46988;&#50640;&#44172; &#46020;&#50880;&#51012; &#51452;&#45716;<br>&#51648;&#45733;&#54805; &#47196;&#48391; &#49884;&#49828;&#53596; &#44060;&#48156;</p>
-            </div>
-        </div>
+  <div class="container">
+    <div class="section-label">// about me</div>
+    <h2 class="section-title">About</h2>
+    <div class="section-divider"></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          <strong>포항공과대학교 RIST 로봇연구소</strong>를 직접 견학하며 로봇에 첫 눈을 뜬 이후,
+          7~8년간 꾸준히 로봇공학 분야의 꿈을 향해 달려왔습니다.
+        </p>
+        <p>
+          <strong>인제대학교</strong>에서 전자IT기계자동차공학부와 지능로봇을 복수전공하며
+          탁월한 학업 성취(GPA 4.15/4.5)를 이루었고, 현재는
+          <strong>UST(과학기술연합대학원대학교) – KITECH(한국생산기술연구원)</strong>
+          학생연구원으로 로봇 공유 제어와 파지 연구를 수행 중입니다.
+        </p>
+        <p>
+          "하고 싶은 일을 하면 그 사람은 성공하는 사람이다" – Bob Dylan
+        </p>
+        <p>
+          향후 10년 이내에 가정 내 가사도우미 로봇을 더욱 발전시키고,
+          로봇과 사람이 자연스럽게 상호작용하는 미래를 만드는 것이 목표입니다.
+        </p>
+      </div>
+      <ul class="info-list">
+        <li><span class="icon">🎓</span><span>UST-KITECH School, 로봇공학 석사과정</span></li>
+        <li><span class="icon">🏢</span><span>한국생산기술연구원(KITECH) 학생연구원</span></li>
+        <li><span class="icon">📍</span><span>Ansan, Korea</span></li>
+        <li><span class="icon">📧</span><a href="mailto:baekjun@kitech.re.kr">baekjun@kitech.re.kr</a></li>
+        <li><span class="icon">📞</span><span>+82 10-8567-8196</span></li>
+        <li><span class="icon">💻</span><a href="https://github.com/RobotLoverInKorea" target="_blank">github.com/RobotLoverInKorea</a></li>
+        <li><span class="icon">🔬</span><span>지도교수: 양기훈 교수님 (Prof. Gi-Hun Yang)</span></li>
+        <li><span class="icon">💡</span><span>연구과제: MOTIE 산업로봇기술개발 (No. 20023294)</span></li>
+      </ul>
     </div>
+  </div>
 </section>
 
-<section id="research">
-    <div class="container fade-in">
-        <h2 class="section-title"><span>Research</span> Interests</h2>
-        <p class="section-desc">&#47196;&#48391;&#51060; &#49324;&#46988;&#52376;&#47100; &#47932;&#52404;&#47484; &#51064;&#49885;&#54616;&#44256; &#51312;&#51089;&#54624; &#49688; &#51080;&#46020;&#47197; &#54616;&#45716; &#54645;&#49900; &#44592;&#49696;&#51012; &#50672;&#44396;&#54633;&#45768;&#45796;.</p>
-        <div class="research-list">
-            <div class="research-item">
-                <div class="research-icon">&#9995;</div>
-                <div>
-                    <h3>Robot Grasping & Manipulation</h3>
-                    <p>Contact-GraspNet &#44592;&#48152; &#54028;&#51648;&#51216; &#52628;&#52636; &#48143; &#47196;&#48391; &#47588;&#45768;&#54540;&#47112;&#51060;&#49496; &#44592;&#49696; &#50672;&#44396;. &#45796;&#50577;&#54620; &#47932;&#52404;&#50640; &#45824;&#54620; &#50504;&#51221;&#51201;&#51064; &#54028;&#51648; &#51204;&#47029; &#44060;&#48156;.</p>
-                </div>
-            </div>
-            <div class="research-item">
-                <div class="research-icon">&#128065;</div>
-                <div>
-                    <h3>Computer Vision for Robotics</h3>
-                    <p>Segment Anything Model 2 (SAM2), Grounded SAM2 &#46321; &#52572;&#49888; &#48708;&#51204; &#47784;&#45944;&#51012; &#54876;&#50857;&#54620; &#47196;&#48391; &#49884;&#44033; &#51064;&#49885; &#48143; &#44061;&#52404; &#48516;&#54624; &#50672;&#44396;.</p>
-                </div>
-            </div>
-            <div class="research-item">
-                <div class="research-icon">&#129504;</div>
-                <div>
-                    <h3>AI & Deep Learning</h3>
-                    <p>&#46373;&#47084;&#45789; &#44592;&#48152; &#47196;&#48391; &#51064;&#51648; &#48143; &#51032;&#49324;&#44208;&#51221; &#49884;&#49828;&#53596;. &#47708;&#54000;&#47784;&#45804; &#51064;&#49885; &#44592;&#49696;&#51012; &#53685;&#54620; &#47196;&#48391; &#51089;&#50629; &#51228;&#50612;.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="projects">
-    <div class="container fade-in">
-        <h2 class="section-title"><span>Projects</span></h2>
-        <p class="section-desc">GitHub&#50640;&#49436; &#51652;&#54665; &#51473;&#51064; &#50672;&#44396; &#54532;&#47196;&#51229;&#53944;&#46308;&#51077;&#45768;&#45796;.</p>
-        <div class="projects-grid">
-            <a href="https://github.com/RobotLoverInKorea/RobotJun_Contact-GraspNet" target="_blank" class="project-card">
-                <div class="project-header">
-                    <h3>RobotJun Contact-GraspNet</h3>
-                    <span class="project-tag tag-original">Original</span>
-                </div>
-                <p>Grounded SAM2 &#47784;&#45944; &#51060;&#54980; Contact GraspNet&#51012; &#54876;&#50857;&#54620; &#54028;&#51648;&#51216; &#52628;&#52636; &#54028;&#51060;&#54532;&#46972;&#51064;. &#47196;&#48391;&#51060; &#47932;&#52404;&#47484; &#51064;&#49885;&#54616;&#44256; &#52572;&#51201;&#51032; &#54028;&#51648;&#51216;&#51012; &#52286;&#45716; &#50672;&#44396;.</p>
-                <div class="project-techs">
-                    <span class="tech-tag">SAM2</span>
-                    <span class="tech-tag">Contact-GraspNet</span>
-                    <span class="tech-tag">Computer Vision</span>
-                    <span class="tech-tag">Robot Grasping</span>
-                </div>
-            </a>
-            <a href="https://github.com/RobotLoverInKorea/AILAB-summer-school-2025" target="_blank" class="project-card">
-                <div class="project-header">
-                    <h3>AILAB Summer School 2025</h3>
-                    <span class="project-tag tag-fork">Participated</span>
-                </div>
-                <p>&#51228;12&#54924; &#51064;&#44277;&#51648;&#45733; &#48143; &#47196;&#48372;&#54001;&#49828; &#50668;&#47492;&#54617;&#44368; (AI & Robotics Summer School 2025) &#52280;&#50668; &#54532;&#47196;&#51229;&#53944;.</p>
-                <div class="project-techs">
-                    <span class="tech-tag">AI</span>
-                    <span class="tech-tag">Robotics</span>
-                    <span class="tech-tag">Summer School</span>
-                </div>
-            </a>
-            <a href="https://github.com/RobotLoverInKorea/sam2" target="_blank" class="project-card">
-                <div class="project-header">
-                    <h3>Segment Anything Model 2 (SAM2)</h3>
-                    <span class="project-tag tag-fork">Fork</span>
-                </div>
-                <p>Meta&#51032; SAM2 &#47784;&#45944; &#50672;&#44396; &#48143; &#47196;&#48391; &#48708;&#51204; &#51025;&#50857;&#51012; &#50948;&#54620; &#49892;&#54744; &#54872;&#44221;. &#51060;&#48120;&#51648; &#48143; &#48708;&#46356;&#50724; &#49464;&#44536;&#47704;&#53580;&#51060;&#49496; &#50672;&#44396;.</p>
-                <div class="project-techs">
-                    <span class="tech-tag">SAM2</span>
-                    <span class="tech-tag">Segmentation</span>
-                    <span class="tech-tag">Meta AI</span>
-                    <span class="tech-tag">PyTorch</span>
-                </div>
-            </a>
-        </div>
-    </div>
-</section>
-
+<!-- ── EDUCATION ── -->
 <section id="education">
-    <div class="container fade-in">
-        <h2 class="section-title"><span>Education</span> & Experience</h2>
-        <p class="section-desc"></p>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="date">2025 ~</div>
-                <h3>UST-KITECH School &#47196;&#48391;&#44277;&#54617; &#51204;&#44277;</h3>
-                <p>&#44284;&#54617;&#44592;&#49696;&#50672;&#54633;&#45824;&#54617;&#50896;&#45824;&#54617;&#44368; &#183; &#54620;&#44397;&#49373;&#49328;&#44592;&#49696;&#50672;&#44396;&#50896; &#54617;&#49373;&#50672;&#44396;&#50896;</p>
-            </div>
-            <div class="timeline-item">
-                <div class="date">2025.07</div>
-                <h3>&#51228;12&#54924; AI & Robotics Summer School</h3>
-                <p>AILAB &#51064;&#44277;&#51648;&#45733; &#48143; &#47196;&#48372;&#54001;&#49828; &#50668;&#47492;&#54617;&#44368; &#52280;&#50668;</p>
-            </div>
+  <div class="container">
+    <div class="section-label">// education</div>
+    <h2 class="section-title">학력</h2>
+    <div class="section-divider"></div>
+
+    <div class="edu-card">
+      <div class="edu-icon">🎓</div>
+      <div class="edu-body">
+        <h3>과학기술연합대학원대학교 (UST) – 한국생산기술연구원 캠퍼스</h3>
+        <div class="edu-major">로봇공학 석사과정 (재학중)</div>
+        <div class="edu-meta">
+          <span>📅 2024.03 – 현재</span>
+          <span class="badge badge-green">재학중</span>
+          <span class="badge badge-blue">학생연구원</span>
         </div>
+        <p style="font-size:.85rem;color:var(--text2);margin-top:.5rem;">
+          지도교수: 양기훈 교수님 (Prof. Gi-Hun Yang) ·
+          연구실: Human-Robot Interaction Lab, KITECH, Ansan
+        </p>
+      </div>
     </div>
+
+    <div class="edu-card">
+      <div class="edu-icon">🏫</div>
+      <div class="edu-body">
+        <h3>인제대학교 (Inje University)</h3>
+        <div class="edu-major">전자IT기계자동차공학부 + 지능로봇 복수전공</div>
+        <div class="edu-meta">
+          <span>📅 2024.02 졸업</span>
+          <span class="badge badge-purple">GPA 4.15 / 4.5</span>
+          <span class="badge badge-orange">우수 졸업</span>
+        </div>
+        <p style="font-size:.85rem;color:var(--text2);margin-top:.5rem;">
+          USG 공유대학 스마트제조엔지니어링사업단 – 경남 6개 대학 연합 지능로봇 복수전공 이수
+        </p>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- ── PUBLICATIONS ── -->
+<section id="publications">
+  <div class="container">
+    <div class="section-label">// publications</div>
+    <h2 class="section-title">논문</h2>
+    <div class="section-divider"></div>
+
+    <!-- Paper 2: UR (Work in Progress) -->
+    <div class="pub-card wip">
+      <div class="pub-status">
+        <span class="badge badge-blue">Under Review</span>
+        <span class="badge badge-purple">Work in Progress</span>
+        <span class="badge badge-green">2025</span>
+      </div>
+      <div class="pub-title">
+        Vision-Based Intent-Driven Shared Autonomy for Robotic Grasping via Foundation Models
+      </div>
+      <div class="pub-authors">
+        <strong>Hyeongjun Baek</strong>, Gi-Hun Yang†
+      </div>
+      <div class="pub-venue">Under Review · Supported by MOTIE Industrial Robot Technology Development Program (No. 20023294)</div>
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:.75rem;line-height:1.6;">
+        원격 조작 시 작업자의 의도를 실시간 비전 행동 인식(VideoMAE V2)으로 추론하여,
+        모드 전환 없이 자동으로 Contact-GraspNet의 파지 생성을 트리거합니다.
+        5-finger ROHand + Franka FR3 + Geomagic Touch 양방향 원격 제어 시스템에 적용하여,
+        <strong style="color:var(--accent2)">전체 워크로드 34.8% 감소 (59.5 → 38.8)</strong>를 NASA-TLX로 입증.
+      </p>
+      <table class="tlx-table">
+        <thead>
+          <tr>
+            <th>NASA-TLX Index</th>
+            <th>Direct Control</th>
+            <th>Shared Control</th>
+            <th>Reduction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Mental Demand</td><td>61.5</td><td class="highlight">42.9</td><td class="highlight">↓ 30.2%</td></tr>
+          <tr><td>Physical Demand</td><td>62.4</td><td class="highlight">42.4</td><td class="highlight">↓ 32.1%</td></tr>
+          <tr><td>Effort</td><td>69.1</td><td class="highlight">42.0</td><td class="highlight">↓ 39.2%</td></tr>
+          <tr><td>Frustration</td><td>68.0</td><td class="highlight">43.6</td><td class="highlight">↓ 35.9%</td></tr>
+          <tr><td><strong>Overall Workload</strong></td><td><strong>59.5</strong></td><td class="highlight"><strong>38.8</strong></td><td class="highlight"><strong>↓ 34.8%</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="pub-tags" style="margin-top:.75rem;">
+        <span class="pub-tag">Shared Autonomy</span>
+        <span class="pub-tag">Intent Recognition</span>
+        <span class="pub-tag">VideoMAE V2</span>
+        <span class="pub-tag">Contact-GraspNet</span>
+        <span class="pub-tag">Franka FR3</span>
+        <span class="pub-tag">5-finger ROHand</span>
+        <span class="pub-tag">ROS 2</span>
+        <span class="pub-tag">NASA-TLX</span>
+      </div>
+    </div>
+
+    <!-- Paper 1: KROC -->
+    <div class="pub-card kroc">
+      <div class="pub-status">
+        <span class="badge badge-green">국내학술대회</span>
+        <span class="badge badge-orange">KROC 2025</span>
+      </div>
+      <div class="pub-title">
+        A State-Fusion Shared Control Method for Improving Contact-GraspNet Teleoperation Grasping Performance
+      </div>
+      <div class="pub-title-ko">
+        원격 제어시 파지 성능 향상을 위한 Contact-GraspNet 기반 상태 융합 공유 제어
+      </div>
+      <div class="pub-authors">
+        <strong>백형준</strong>, 이헌조, 양기훈†
+      </div>
+      <div class="pub-venue">한국로봇 종합학술대회 (KROC) · Supported by MOTIE (No. 20023294)</div>
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:.75rem;line-height:1.6;">
+        Grounded SAM2로 객체를 세그멘테이션하고 Contact-GraspNet으로 6-DoF 파지 후보를 생성한 뒤,
+        거리 기반 가중치(α_d)와 의도 정렬 가중치(α_align)를 결합한 SFSC 알고리즘으로
+        자율 제어와 인간 제어 권한을 동적으로 조절합니다.
+        Franka Research 3 리더-팔로워 시스템으로 구현 및 실험 검증.
+      </p>
+      <div class="pub-tags">
+        <span class="pub-tag">State-Fusion Shared Control</span>
+        <span class="pub-tag">Contact-GraspNet</span>
+        <span class="pub-tag">Grounded SAM2</span>
+        <span class="pub-tag">Teleoperation</span>
+        <span class="pub-tag">Potential Field</span>
+        <span class="pub-tag">Franka Research 3</span>
+        <span class="pub-tag">Intel RealSense D435</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESEARCH INTERESTS ── -->
+<section id="research">
+  <div class="container">
+    <div class="section-label">// research interests</div>
+    <h2 class="section-title">연구 분야</h2>
+    <div class="section-divider"></div>
+    <div class="research-grid">
+      <div class="research-card">
+        <div class="research-icon">🤝</div>
+        <h3>Shared Control / Autonomy</h3>
+        <p>State-Fusion Shared Control(SFSC), 거리·의도 기반 권한 동적 조절, 인간-자율 시스템 협력</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">🖐</div>
+        <h3>Robot Grasping</h3>
+        <p>6-DoF Grasp Generation, Contact-GraspNet, 복잡 환경 파지 후보 생성 및 최적화</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">📡</div>
+        <h3>Teleoperation</h3>
+        <p>리더-팔로워 양방향 원격 제어, 인지 부하 저감, Franka Research 3 / Geomagic Touch</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">👁</div>
+        <h3>Computer Vision</h3>
+        <p>Grounded SAM2, VideoMAE V2 실시간 행동 인식, YOLO 객체 탐지, RGB-D Point Cloud</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">🧠</div>
+        <h3>Foundation Models for Robotics</h3>
+        <p>대형 비전 모델의 로봇 제어 적용, 의도 추론(Intent Inference), 자동 트리거 파이프라인</p>
+      </div>
+      <div class="research-card">
+        <div class="research-icon">🖖</div>
+        <h3>Dexterous Manipulation</h3>
+        <p>5-finger ROHand 다중 손가락 제어, 병진-회전 제어 분리, 정밀 파지 자세 계획</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">// projects</div>
+    <h2 class="section-title">프로젝트</h2>
+    <div class="section-divider"></div>
+    <div class="project-list">
+
+      <div class="project-item">
+        <div class="project-date">2023.11</div>
+        <div class="project-body">
+          <h4>🏆 창원대학교 전국 자율주행로봇 경진대회 <span class="badge badge-green">16강 진출</span></h4>
+          <p>아이로봇 동아리를 창설하여 43개 팀 중 5팀 조에서 3승1패로 16강 진출. 초음파 센서 기반 자율주행 전략 및 방어 로직 설계.</p>
+          <div class="project-tech"><span class="tech-chip">Arduino</span><span class="tech-chip">팀장</span><span class="tech-chip">7명</span></div>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-date">2023.06~07</div>
+        <div class="project-body">
+          <h4>🤖 주차가능한 야외 배달로봇 개발 <span class="badge badge-purple">4개 대학 중 2등</span></h4>
+          <p>경남 4개 대학 캡스톤 디자인. OpenCV 비전 기반 선 인식 주행 프로그래밍 담당. 로봇 규격 330×310×210mm, 블루투스·DC모터 통합 시스템.</p>
+          <div class="project-tech"><span class="tech-chip">Linux</span><span class="tech-chip">OpenCV</span><span class="tech-chip">Arduino</span><span class="tech-chip">팀장</span></div>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-date">2023.03~07</div>
+        <div class="project-body">
+          <h4>🔮 3D 홀로그램 장치</h4>
+          <p>Python OpenCV로 손 제스처 인식, Unity UI 구현. 교육·병원·박물관 응용 목적의 손 마우스 기반 홀로그램 조작 시스템.</p>
+          <div class="project-tech"><span class="tech-chip">Python</span><span class="tech-chip">OpenCV</span><span class="tech-chip">Unity</span></div>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-date">2023.03~06</div>
+        <div class="project-body">
+          <h4>📐 모바일 로봇 시뮬레이션</h4>
+          <p>MATLAB으로 Dead Reckoning, PID Line Following, Obstacle Detection 등 4개 TASK 구현.</p>
+          <div class="project-tech"><span class="tech-chip">MATLAB</span><span class="tech-chip">PID</span></div>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-date">2022.12~2023.01</div>
+        <div class="project-body">
+          <h4>✋ 로봇 그리퍼 설계 (3-Fingers)</h4>
+          <p>경남 4개 대학 연합 프로젝트. Inventor 3D 설계 → 3D 프린팅. 연필·탁구공 파지 가능한 3_fingers 구조물 완성.</p>
+          <div class="project-tech"><span class="tech-chip">Arduino</span><span class="tech-chip">Inventor</span><span class="tech-chip">3D Printing</span><span class="tech-chip">팀장</span></div>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-date">2022.09~12</div>
+        <div class="project-body">
+          <h4>🔌 로봇 제어 장치 설계 (PCB)</h4>
+          <p>Altium으로 마이크로마우스 & 축구로봇 PCB 설계. 블록 다이어그램 → 회로도 → PCB 전 과정 직접 수행.</p>
+          <div class="project-tech"><span class="tech-chip">Altium</span><span class="tech-chip">PCB</span><span class="tech-chip">팀장</span></div>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-date">2022.06~07</div>
+        <div class="project-body">
+          <h4>🦾 OpenMANIPULATOR-X 동작 구현</h4>
+          <p>SCARA 로봇 SolidWorks 설계 + 모션 시뮬레이션. MATLAB·Arduino로 4DOF 로봇의 정/역기구학 프로그래밍.</p>
+          <div class="project-tech"><span class="tech-chip">Arduino</span><span class="tech-chip">MATLAB</span><span class="tech-chip">SolidWorks</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
 <section id="skills">
-    <div class="container fade-in">
-        <h2 class="section-title"><span>Skills</span> & Tools</h2>
-        <p class="section-desc"></p>
-        <div class="skills-grid">
-            <div class="skill-item"><span class="skill-icon">&#128013;</span><span>Python</span></div>
-            <div class="skill-item"><span class="skill-icon">&#128293;</span><span>PyTorch</span></div>
-            <div class="skill-item"><span class="skill-icon">&#128065;</span><span>OpenCV</span></div>
-            <div class="skill-item"><span class="skill-icon">&#129302;</span><span>ROS</span></div>
-            <div class="skill-item"><span class="skill-icon">&#128200;</span><span>Deep Learning</span></div>
-            <div class="skill-item"><span class="skill-icon">&#127912;</span><span>Computer Vision</span></div>
-            <div class="skill-item"><span class="skill-icon">&#128736;</span><span>Linux / Ubuntu</span></div>
-            <div class="skill-item"><span class="skill-icon">&#128230;</span><span>Docker</span></div>
-            <div class="skill-item"><span class="skill-icon">&#128187;</span><span>Git / GitHub</span></div>
+  <div class="container">
+    <div class="section-label">// technical skills</div>
+    <h2 class="section-title">기술 스택</h2>
+    <div class="section-divider"></div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3>Languages</h3>
+        <div class="skill-chips">
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">C++</span>
+          <span class="skill-chip">C#</span>
+          <span class="skill-chip">MATLAB</span>
+          <span class="skill-chip">Arduino (C)</span>
         </div>
+      </div>
+      <div class="skill-group">
+        <h3>Frameworks & Tools</h3>
+        <div class="skill-chips">
+          <span class="skill-chip">ROS 2</span>
+          <span class="skill-chip">OpenCV</span>
+          <span class="skill-chip">PyTorch</span>
+          <span class="skill-chip">Unity</span>
+          <span class="skill-chip">SolidWorks</span>
+          <span class="skill-chip">Altium</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Robots & Hardware</h3>
+        <div class="skill-chips">
+          <span class="skill-chip">Franka FR3</span>
+          <span class="skill-chip">5-finger ROHand</span>
+          <span class="skill-chip">Geomagic Touch</span>
+          <span class="skill-chip">Doosan Robotics</span>
+          <span class="skill-chip">FANUC</span>
+          <span class="skill-chip">OpenMANIPULATOR-X</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Vision & AI Models</h3>
+        <div class="skill-chips">
+          <span class="skill-chip">Contact-GraspNet</span>
+          <span class="skill-chip">Grounded SAM2</span>
+          <span class="skill-chip">VideoMAE V2</span>
+          <span class="skill-chip">YOLO</span>
+          <span class="skill-chip">Intel RealSense</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>OS & Environments</h3>
+        <div class="skill-chips">
+          <span class="skill-chip">Linux (Ubuntu)</span>
+          <span class="skill-chip">Windows</span>
+          <span class="skill-chip">Android OS</span>
+          <span class="skill-chip">VS Code</span>
+          <span class="skill-chip">Visual Studio</span>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
+<!-- ── AWARDS ── -->
+<section id="awards">
+  <div class="container">
+    <div class="section-label">// awards & activities</div>
+    <h2 class="section-title">수상 및 활동</h2>
+    <div class="section-divider"></div>
+    <div class="award-list">
+      <div class="award-item">
+        <div class="award-icon">🥇</div>
+        <div class="award-body">
+          <h4>창원대학교 전국 자율주행로봇 경진대회 – 16강 진출</h4>
+          <p>43개 팀 참가, 3승1패 · 아이로봇 동아리 창설 후 첫 대회 출전</p>
+        </div>
+        <div class="award-date">2023.11</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">🥈</div>
+        <div class="award-body">
+          <h4>경남 4개 대학 로봇 캡스톤 디자인 – 2등</h4>
+          <p>야외 배달로봇 개발 · 비전 기반 선 인식 주행 구현</p>
+        </div>
+        <div class="award-date">2023.07</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">🏅</div>
+        <div class="award-body">
+          <h4>창작 드론 경진대회 우수상 (3등)</h4>
+          <p>경남 6개 대학 참가 · 드론택시 경로 계획 및 주행 전략 기획, 팀장</p>
+        </div>
+        <div class="award-date">2023.08</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">🥈</div>
+        <div class="award-body">
+          <h4>경남 6개 대학 아두이노 경진대회 – 2등 (성과공유회 초청 발표)</h4>
+          <p>'auto laundry' – 로드셀 센서 기반 세탁물 중량 감지 및 세제 자동 공급 시스템</p>
+        </div>
+        <div class="award-date">2021.12</div>
+      </div>
+      <div class="award-item">
+        <div class="award-icon">🏫</div>
+        <div class="award-body">
+          <h4>아이로봇 동아리 창설</h4>
+          <p>울산·경남지역혁신플랫폼 지원 · 경남 7개 대학 참가 · 7명 팀 구성</p>
+        </div>
+        <div class="award-date">2023.10~2024.01</div>
+      </div>
+    </div>
+
+    <!-- Training -->
+    <h3 style="color:var(--text3);font-size:1.1rem;font-weight:600;margin:2rem 0 1rem;">교육이력</h3>
+    <div class="training-list">
+      <div class="training-item">
+        <div class="training-icon">🌏</div>
+        <div class="training-body">
+          <h4>필리핀 해외 인턴십 및 어학프로그램</h4>
+          <p>USG공유대학 스마트제조엔지니어링사업단 · 해외 기업 탐방 · TOEIC Speaking 90 → 140 향상</p>
+        </div>
+        <div class="training-date">2024.01~02</div>
+      </div>
+      <div class="training-item">
+        <div class="training-icon">🤖</div>
+        <div class="training-body">
+          <h4>두산로보틱스 산업용 로봇교육</h4>
+          <p>한국전기연구원 (2박3일) · 협동로봇 설치, 복구, 조그 조작, 기본 프로그래밍 · 물체 파지 및 배치 반복 작업 실습</p>
+        </div>
+        <div class="training-date">2023.08</div>
+      </div>
+      <div class="training-item">
+        <div class="training-icon">⚙️</div>
+        <div class="training-body">
+          <h4>한국화낙기술연구소 로봇 교육</h4>
+          <p>창원 화낙연구소 (3박4일) · FANUC 로봇 ARM 직접 프로그래밍 · 그리퍼 조작 및 픽 앤 플레이스 작업 수행</p>
+        </div>
+        <div class="training-date">2023.07</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
 <section id="contact">
-    <div class="container fade-in">
-        <h2 class="section-title"><span>Contact</span></h2>
-        <p class="section-desc">&#50672;&#44396; &#54801;&#50629;&#51060;&#45208; &#47928;&#51032; &#49324;&#54637;&#51060; &#51080;&#51004;&#49884;&#47732; &#50616;&#51228;&#46304;&#51648; &#50672;&#46973; &#51452;&#49464;&#50836;.</p>
-        <div class="contact-cards">
-            <a href="https://github.com/RobotLoverInKorea" target="_blank" class="contact-card">
-                <div class="icon">&#128187;</div>
-                <h3>GitHub</h3>
-                <p>@RobotLoverInKorea</p>
-            </a>
-            <a href="https://www.kitech.re.kr" target="_blank" class="contact-card">
-                <div class="icon">&#127971;</div>
-                <h3>KITECH</h3>
-                <p>&#54620;&#44397;&#49373;&#49328;&#44592;&#49696;&#50672;&#44396;&#50896;</p>
-            </a>
-            <a href="https://www.ust.ac.kr" target="_blank" class="contact-card">
-                <div class="icon">&#127891;</div>
-                <h3>UST</h3>
-                <p>&#44284;&#54617;&#44592;&#49696;&#50672;&#54633;&#45824;&#54617;&#50896;&#45824;&#54617;&#44368;</p>
-            </a>
-        </div>
+  <div class="container">
+    <div class="section-label">// contact</div>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-divider" style="margin:0 auto 1rem;"></div>
+    <p style="color:var(--text2);font-size:.95rem;">
+      연구 협력, 질문, 또는 그냥 인사도 환영합니다 😊
+    </p>
+    <div class="contact-grid">
+      <a class="contact-card" href="mailto:baekjun@kitech.re.kr">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-label">Research Email</div>
+        <div class="contact-value">baekjun@kitech.re.kr</div>
+      </a>
+      <a class="contact-card" href="mailto:baekjun8196@daum.net">
+        <div class="contact-icon">📬</div>
+        <div class="contact-label">Personal Email</div>
+        <div class="contact-value">baekjun8196@daum.net</div>
+      </a>
+      <a class="contact-card" href="https://github.com/RobotLoverInKorea" target="_blank">
+        <div class="contact-icon">💻</div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-value">RobotLoverInKorea</div>
+      </a>
+      <a class="contact-card" href="tel:+821085678196">
+        <div class="contact-icon">📞</div>
+        <div class="contact-label">Phone</div>
+        <div class="contact-value">+82 10-8567-8196</div>
+      </a>
     </div>
+  </div>
 </section>
 
+<!-- ── FOOTER ── -->
 <footer>
-    <div class="container">
-        <p>&copy; 2025 Baek Hyungjun. Built with passion for robotics.</p>
-    </div>
+  <p>© 2025 Hyeongjun Baek (백형준) · UST-KITECH School, Robotics Engineering</p>
+  <p style="margin-top:.3rem;">
+    Built with ❤️ · Hosted on <a href="https://github.com/RobotLoverInKorea/RobotLoverInKorea.github.io" target="_blank">GitHub Pages</a>
+  </p>
 </footer>
-
-<script>
-    // Scroll animation
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    // Smooth scroll
-    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-    });
-</script>
 
 </body>
 </html>
